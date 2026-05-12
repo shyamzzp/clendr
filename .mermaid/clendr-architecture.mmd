@@ -1,0 +1,91 @@
+%% Clendr application architecture and user action flow.
+%% Keep this folder to a single file. Update this diagram whenever a feature,
+%% change, or fix modifies application behavior.
+
+flowchart TB
+  user((User))
+  browser[Browser]
+  next[Next.js static app]
+  app[CalendarApp client component]
+  storage[(localStorage<br/>clendr.snapshot.v1)]
+  exportFile[(JSON backup file)]
+
+  subgraph UI[Application Components]
+    sidebar[Sidebar<br/>brand, new event, mini month, calendars, today list]
+    topbar[Topbar<br/>date navigation, search, view switcher, settings]
+    surface[Calendar surface<br/>day, week, month, agenda, year]
+    inspector[Inspector<br/>selected day, reminders, import/export]
+    dialogs[Dialogs<br/>event, reminder, settings]
+  end
+
+  subgraph State[State And Utilities]
+    snapshot[Calendar snapshot<br/>selectedDate, view, calendars, events, reminders, settings]
+    calendarUtils[lib/calendar.js<br/>seed, create, filter, visibility, reminders]
+    dateUtils[lib/date-utils.js<br/>local date keys, ranges, month/week grids]
+    storageUtils[lib/storage.js<br/>load, save, reset, import, export]
+  end
+
+  subgraph Actions[User Action Flow]
+    createEvent[Create or edit event]
+    createReminder[Create or complete reminder]
+    switchView[Switch calendar view]
+    changeSettings[Change settings or calendar colors]
+    searchEvents[Search visible events]
+    backupData[Import or export JSON backup]
+  end
+
+  subgraph Build[Build And Verification]
+    tests[Node tests<br/>calendar and storage utilities]
+    smoke[Playwright smoke<br/>event persistence and settings]
+    staticExport[Static artifact<br/>out/index.html and _next assets]
+    github[GitHub public repo<br/>shyamzzp/clendr]
+  end
+
+  subgraph ChangeLog[Diagram Change Branches]
+    c001[change: initial application<br/>working local calendar]
+    fix001[fix: add Mermaid architecture tracking<br/>single .mermaid source of truth]
+  end
+
+  user --> browser --> next --> app
+  app --> sidebar
+  app --> topbar
+  app --> surface
+  app --> inspector
+  app --> dialogs
+
+  sidebar --> createEvent
+  topbar --> switchView
+  topbar --> searchEvents
+  topbar --> changeSettings
+  surface --> createEvent
+  inspector --> createReminder
+  inspector --> backupData
+  dialogs --> createEvent
+  dialogs --> createReminder
+  dialogs --> changeSettings
+
+  createEvent --> snapshot
+  createReminder --> snapshot
+  switchView --> snapshot
+  changeSettings --> snapshot
+  searchEvents --> calendarUtils
+  backupData --> storageUtils
+
+  snapshot --> calendarUtils
+  snapshot --> dateUtils
+  snapshot --> storageUtils
+  storageUtils <--> storage
+  storageUtils <--> exportFile
+
+  tests --> calendarUtils
+  tests --> storageUtils
+  smoke --> app
+  next --> staticExport
+  staticExport --> github
+
+  c001 --> UI
+  c001 --> State
+  c001 --> Build
+  fix001 --> ChangeLog
+  fix001 --> UI
+
