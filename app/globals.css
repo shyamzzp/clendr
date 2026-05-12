@@ -1,16 +1,21 @@
 :root {
-  --bg: #19191d;
-  --panel: rgba(38, 38, 44, 0.86);
-  --panel-strong: rgba(49, 49, 57, 0.96);
-  --line: rgba(255, 255, 255, 0.1);
-  --text: #f8f5f2;
-  --muted: #aaa5a0;
-  --soft: #d8d1ca;
+  --bg: #f0eee9;
+  --panel: rgba(255, 255, 255, 0.94);
+  --panel-strong: #ffffff;
+  --line: rgba(31, 31, 35, 0.12);
+  --text: #1e1d1d;
+  --muted: #7a746d;
+  --soft: #3c3935;
+  --sidebar-bg: #09090b;
+  --sidebar-panel: rgba(255, 255, 255, 0.07);
+  --sidebar-line: rgba(255, 255, 255, 0.12);
+  --sidebar-text: #f8f5f2;
+  --sidebar-muted: #96908a;
   --accent: #e84d4d;
   --accent-strong: #ff6961;
   --blue: #2f80ed;
   --green: #21a67a;
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  --shadow: 0 22px 54px rgba(34, 29, 24, 0.16);
 }
 
 * {
@@ -21,9 +26,7 @@ html,
 body {
   min-height: 100%;
   margin: 0;
-  background:
-    radial-gradient(circle at 20% 0%, rgba(232, 77, 77, 0.14), transparent 32rem),
-    linear-gradient(135deg, #202024 0%, #121215 100%);
+  background: var(--sidebar-bg);
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -50,14 +53,55 @@ button {
   display: grid;
   grid-template-columns: 292px minmax(0, 1fr);
   min-height: 100vh;
+  background: var(--bg);
+  font-size: 80%;
+}
+
+.calendar-app.scale-90 {
+  font-size: 90%;
+}
+
+.calendar-app.scale-100 {
+  font-size: 100%;
+}
+
+.calendar-app.theme-dark {
+  --bg: #f0eee9;
+  --panel: rgba(255, 255, 255, 0.94);
+  --panel-strong: #ffffff;
+  --line: rgba(31, 31, 35, 0.12);
+  --text: #1e1d1d;
+  --muted: #7a746d;
+  --soft: #3c3935;
+  --sidebar-bg: #09090b;
+  --sidebar-panel: rgba(255, 255, 255, 0.07);
+  --sidebar-line: rgba(255, 255, 255, 0.12);
+  --sidebar-text: #f8f5f2;
+  --sidebar-muted: #96908a;
+}
+
+.calendar-app.theme-light {
+  --bg: #faf8f4;
+  --panel: #ffffff;
+  --panel-strong: #ffffff;
+  --line: rgba(30, 29, 29, 0.12);
+  --text: #1f1d1b;
+  --muted: #7b756f;
+  --soft: #3c3935;
+  --sidebar-bg: #ffffff;
+  --sidebar-panel: rgba(0, 0, 0, 0.035);
+  --sidebar-line: rgba(30, 29, 29, 0.12);
+  --sidebar-text: #1f1d1b;
+  --sidebar-muted: #7b756f;
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  border-right: 1px solid var(--line);
-  background: rgba(25, 25, 29, 0.82);
+  border-right: 1px solid var(--sidebar-line);
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
   padding: 22px;
   backdrop-filter: blur(24px);
 }
@@ -94,6 +138,12 @@ button {
   font-weight: 700;
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+.sidebar .eyebrow,
+.sidebar .muted,
+.sidebar .today-item span {
+  color: var(--sidebar-muted);
 }
 
 h1,
@@ -184,11 +234,23 @@ h3 {
   padding: 14px;
 }
 
+.sidebar-section,
+.mini-month {
+  border-color: var(--sidebar-line);
+  background: var(--sidebar-panel);
+}
+
 .section-title {
   margin-bottom: 10px;
   color: var(--soft);
   font-size: 0.82rem;
   font-weight: 800;
+}
+
+.sidebar .section-title,
+.sidebar .calendar-toggle,
+.sidebar .mini-grid button {
+  color: var(--sidebar-text);
 }
 
 .mini-grid {
@@ -199,7 +261,7 @@ h3 {
 
 .mini-grid.weekdays {
   margin-bottom: 6px;
-  color: var(--muted);
+  color: var(--sidebar-muted);
   font-size: 0.7rem;
   text-align: center;
 }
@@ -226,6 +288,10 @@ h3 {
   color: rgba(255, 255, 255, 0.28);
 }
 
+.theme-light .mini-grid .muted-day {
+  color: rgba(30, 29, 29, 0.28);
+}
+
 .mini-grid i {
   position: absolute;
   bottom: 4px;
@@ -245,7 +311,7 @@ h3 {
 
 .calendar-toggle {
   min-height: 30px;
-  color: var(--soft);
+  color: var(--sidebar-text);
 }
 
 .color-dot {
@@ -263,7 +329,7 @@ h3 {
   display: grid;
   gap: 3px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--sidebar-panel);
   padding: 9px;
   text-align: left;
 }
@@ -290,8 +356,12 @@ h3 {
   gap: 18px;
   border-bottom: 1px solid var(--line);
   padding: 14px 20px;
-  background: rgba(25, 25, 29, 0.68);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(18px);
+}
+
+.theme-light .topbar {
+  background: rgba(250, 248, 244, 0.78);
 }
 
 .date-nav,
@@ -306,10 +376,14 @@ textarea {
   min-height: 36px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.075);
+  background: rgba(255, 255, 255, 0.78);
   color: var(--text);
   padding: 0 11px;
   outline: none;
+}
+
+.sidebar input {
+  accent-color: var(--accent);
 }
 
 textarea {
@@ -326,7 +400,7 @@ option {
   display: flex;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.035);
   padding: 3px;
 }
 
@@ -339,8 +413,9 @@ option {
 }
 
 .segmented button.active {
-  background: rgba(255, 255, 255, 0.16);
+  background: #ffffff;
   color: var(--text);
+  box-shadow: 0 5px 16px rgba(31, 31, 35, 0.08);
 }
 
 .workspace {
@@ -361,11 +436,11 @@ option {
   gap: 14px;
   border-left: 1px solid var(--line);
   padding: 18px;
-  background: rgba(20, 20, 24, 0.48);
+  background: rgba(255, 255, 255, 0.42);
 }
 
 .focus-card {
-  background: linear-gradient(160deg, rgba(232, 77, 77, 0.2), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(160deg, rgba(232, 77, 77, 0.12), rgba(255, 255, 255, 0.95));
 }
 
 .section-row {
@@ -381,7 +456,7 @@ option {
   align-items: flex-start;
   border-left: 3px solid var(--muted);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.72);
   padding: 9px;
 }
 
@@ -480,7 +555,7 @@ option {
   gap: 2px;
   border-left: 4px solid var(--event-color);
   border-radius: 8px;
-  background: color-mix(in srgb, var(--event-color) 22%, rgba(255, 255, 255, 0.08));
+  background: color-mix(in srgb, var(--event-color) 14%, white);
   padding: 7px 9px;
   text-align: left;
 }
@@ -566,7 +641,7 @@ option {
   overflow: hidden;
   border-left: 3px solid;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.72);
   padding: 4px 6px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -593,7 +668,7 @@ option {
 .year-month {
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.74);
   padding: 12px;
   text-align: left;
 }
@@ -614,7 +689,7 @@ option {
 .year-month i {
   height: 5px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(31, 31, 35, 0.14);
 }
 
 .year-month i.has-event {
@@ -637,7 +712,7 @@ option {
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(34, 34, 40, 0.98);
+  background: var(--panel-strong);
   box-shadow: var(--shadow);
 }
 

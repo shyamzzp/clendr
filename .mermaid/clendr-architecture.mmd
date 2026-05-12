@@ -12,7 +12,7 @@ flowchart TB
 
   subgraph UI[Application Components]
     sidebar[Sidebar<br/>brand, new event, mini month, calendars, today list]
-    topbar[Topbar<br/>date navigation, search, view switcher, settings]
+    topbar[Topbar<br/>date navigation, search, view switcher, light theme, settings]
     surface[Calendar surface<br/>day, week, month, agenda, year]
     inspector[Inspector<br/>selected day, reminders, import/export]
     dialogs[Dialogs<br/>event, reminder, settings]
@@ -29,7 +29,7 @@ flowchart TB
     createEvent[Create or edit event]
     createReminder[Create or complete reminder]
     switchView[Switch calendar view]
-    changeSettings[Change settings or calendar colors]
+    changeSettings[Change settings, theme, scale, or calendar colors]
     searchEvents[Search visible events]
     backupData[Import or export JSON backup]
   end
@@ -44,6 +44,7 @@ flowchart TB
   subgraph ChangeLog[Diagram Change Branches]
     c001[change: initial application<br/>working local calendar]
     fix001[fix: add Mermaid architecture tracking<br/>single .mermaid source of truth]
+    fix002[fix: restore Figma-style split layout<br/>black left rail, light right panel, 80 percent scale]
   end
 
   user --> browser --> next --> app
@@ -88,4 +89,7 @@ flowchart TB
   c001 --> Build
   fix001 --> ChangeLog
   fix001 --> UI
-
+  fix002 --> sidebar
+  fix002 --> topbar
+  fix002 --> surface
+  fix002 --> changeSettings

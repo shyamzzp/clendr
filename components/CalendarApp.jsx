@@ -266,9 +266,11 @@ export default function CalendarApp() {
 
   const todayEvents = eventsForDate(visible, selectedDate);
   const todayReminders = dueReminders(snapshot.reminders, selectedDate);
+  const scale = snapshot.settings.uiScale ?? "80";
+  const theme = snapshot.settings.theme === "light" ? "light" : "dark";
 
   return (
-    <main className={`calendar-app density-${snapshot.settings.density}`}>
+    <main className={`calendar-app density-${snapshot.settings.density} theme-${theme} scale-${scale}`}>
       <aside className="sidebar">
         <div className="brand-row">
           <div className="brand-mark">C</div>
@@ -357,6 +359,12 @@ export default function CalendarApp() {
             <button className="ghost-button" onClick={() => setShowSettings(true)}>
               Settings
             </button>
+            <button
+              className="ghost-button"
+              onClick={() => updateSetting("theme", theme === "light" ? "dark" : "light")}
+            >
+              {theme === "light" ? "Dark" : "Light"}
+            </button>
           </div>
         </header>
 
@@ -419,6 +427,7 @@ export default function CalendarApp() {
                 </label>
               </div>
             </div>
+
           </aside>
         </div>
       </section>
@@ -725,6 +734,8 @@ function SettingsDialog({ snapshot, updateSetting, updateCalendar, onClose, onRe
             <label>Week starts on<select value={snapshot.settings.weekStartsOn} onChange={(event) => updateSetting("weekStartsOn", Number(event.target.value))}><option value="1">Monday</option><option value="0">Sunday</option></select></label>
             <label>Time format<select value={snapshot.settings.timeFormat} onChange={(event) => updateSetting("timeFormat", event.target.value)}><option value="12h">12 hour</option><option value="24h">24 hour</option></select></label>
             <label>Density<select value={snapshot.settings.density} onChange={(event) => updateSetting("density", event.target.value)}><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></label>
+            <label>Theme<select value={snapshot.settings.theme} onChange={(event) => updateSetting("theme", event.target.value)}><option value="dark">Dark</option><option value="light">Light</option></select></label>
+            <label>Interface scale<select value={snapshot.settings.uiScale ?? "80"} onChange={(event) => updateSetting("uiScale", event.target.value)}><option value="80">80%</option><option value="90">90%</option><option value="100">100%</option></select></label>
             <label className="check-row"><input type="checkbox" checked={snapshot.settings.notifications} onChange={(event) => updateSetting("notifications", event.target.checked)} /> Notifications</label>
           </section>
           <section>
